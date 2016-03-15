@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 
 import br.com.fatec.netty.chat.example.client.ContainerClient;
 import br.com.fatec.netty.chat.example.server.ContainerServer;
+import br.com.fatec.netty.chat.example.view.Console;
 
 /**
  * Hello world!
@@ -21,6 +22,7 @@ public class App extends JFrame implements ActionListener {
 	private JLabel label1;
 	private JButton botao1;
 	private JButton botao2;
+	private JButton botao3;
 
 	private String server = "localhost";
 	private int port = 5252;
@@ -49,6 +51,12 @@ public class App extends JFrame implements ActionListener {
 		botao2.addActionListener(this);
 		this.add(botao2);
 
+		botao3 = new JButton();
+		botao3.setText("Open Console");
+		botao3.setBounds(40, 180, 200, 50);
+		botao3.addActionListener(this);
+		this.add(botao3);
+
 	}
 
 	public static void main(String[] args) {
@@ -72,10 +80,12 @@ public class App extends JFrame implements ActionListener {
 
 		if (e.getSource().equals(botao1)) {
 			this.startServer();
-			
+
 		} else if (e.getSource().equals(botao2)) {
 			this.startClient();
-			
+
+		} else if (e.getSource().equals(botao3)) {
+			Console.getInstance();
 		}
 	}
 }
