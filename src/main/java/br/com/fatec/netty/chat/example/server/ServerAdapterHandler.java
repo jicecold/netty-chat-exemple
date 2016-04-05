@@ -1,5 +1,7 @@
 package br.com.fatec.netty.chat.example.server;
 
+import java.math.BigInteger;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -11,7 +13,9 @@ public class ServerAdapterHandler extends SimpleChannelInboundHandler<String> {
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
 		Channel currentChannel = ctx.channel();
-		System.out.println("[INFO] - " + currentChannel.remoteAddress() + " - " + msg);
+		System.out.print("[INFO] - " + currentChannel.remoteAddress() + " - " + msg);
+		String binary = new BigInteger(msg.replace("\n", "").getBytes()).toString(2);
+		System.out.println("[INFO] - Em binario: " + binary + "\n");
 
 		if ("ping\n".equals(msg) && isPing) {
 			Thread.sleep(1000);
@@ -23,7 +27,7 @@ public class ServerAdapterHandler extends SimpleChannelInboundHandler<String> {
 				isPing = true;
 				currentChannel.writeAndFlush("pong\n");
 			} else {
-				currentChannel.writeAndFlush("[Receptor] - Mensagem Recebida com sucesso: " + msg + "\n");
+				currentChannel.writeAndFlush("[Receptor] - Mensagem Recebida: " + msg + "\n");
 			}
 		}
 
