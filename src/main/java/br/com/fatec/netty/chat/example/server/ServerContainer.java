@@ -5,15 +5,15 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-public class ContainerServer extends Thread {
+public class ServerContainer extends Thread {
 
 	private int port;
 
-	public ContainerServer() {
+	public ServerContainer() {
 		this(5252);
 	}
 
-	public ContainerServer(int port) {
+	public ServerContainer(int port) {
 		this.port = port;
 	}
 

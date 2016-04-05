@@ -1,11 +1,13 @@
 package br.com.fatec.netty.chat.example.view;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowListener;
+import java.util.EventObject;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -15,6 +17,8 @@ import javax.swing.JTextArea;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 
+import br.com.fatec.netty.chat.example.client.ClientContainer;
+
 public class Cliente extends WindowAdapter implements WindowListener {
 
 	private JFrame frame;
@@ -23,22 +27,23 @@ public class Cliente extends WindowAdapter implements WindowListener {
 	private JScrollPane jScrollPane1;
 	private JScrollPane jScrollPane2;
 	private JTextArea mensagemjTextArea;
+	private ClientContainer containerClient;
 
-	public Cliente() {
+	public Cliente(String server, int port) {
 		initComponents();
+		containerClient = new ClientContainer(server, port, chatjTextArea);
+		containerClient.start();
 	}
 
 	private void initComponents() {
 
 		frame = new JFrame("Cliente");
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
 
-		jScrollPane1 = new javax.swing.JScrollPane();
-		chatjTextArea = new javax.swing.JTextArea();
-		jScrollPane2 = new javax.swing.JScrollPane();
-		mensagemjTextArea = new javax.swing.JTextArea();
-		enviarjButton = new javax.swing.JButton();
+		jScrollPane1 = new JScrollPane();
+		chatjTextArea = new JTextArea();
+		jScrollPane2 = new JScrollPane();
+		mensagemjTextArea = new JTextArea();
+		enviarjButton = new JButton();
 
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,7 +56,7 @@ public class Cliente extends WindowAdapter implements WindowListener {
 		mensagemjTextArea.setRows(5);
 		mensagemjTextArea.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent evt) {
-				// mensagemjTextAreaKeyReleased(evt);
+				mensagemjTextAreaKeyReleased(evt);
 			}
 		});
 		jScrollPane2.setViewportView(mensagemjTextArea);
@@ -59,7 +64,7 @@ public class Cliente extends WindowAdapter implements WindowListener {
 		enviarjButton.setText("Enviar");
 		enviarjButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				// enviarjButtonActionPerformed(evt);
+				enviarjButtonActionPerformed(evt);
 			}
 		});
 
@@ -70,11 +75,11 @@ public class Cliente extends WindowAdapter implements WindowListener {
 						.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 386, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(enviarjButton, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)));
-		
+
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup()
 						.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 349, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
 								.addComponent(jScrollPane2).addComponent(enviarjButton, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -83,7 +88,23 @@ public class Cliente extends WindowAdapter implements WindowListener {
 		frame.pack();
 	}
 
-	public static void main(String[] args) {
-		new Cliente();
+	protected void mensagemjTextAreaKeyReleased(KeyEvent evt) {
+		if( evt.getKeyCode() == 13 ){
+			enviarjButtonActionPerformed(evt);
+		}
+		
+	}
+
+	public void setLocationRelativeTo(Component component) {
+		this.frame.setLocationRelativeTo(component);
+	}
+
+	public void setVisible(boolean b) {
+		this.frame.setVisible(b);
+	}
+
+	public void enviarjButtonActionPerformed(EventObject event) {
+		containerClient.sendAndFlushMessage(mensagemjTextArea.getText());
+		mensagemjTextArea.setText("");
 	}
 }

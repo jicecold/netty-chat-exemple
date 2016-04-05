@@ -7,8 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import br.com.fatec.netty.chat.example.client.ContainerClient;
-import br.com.fatec.netty.chat.example.server.ContainerServer;
+import br.com.fatec.netty.chat.example.server.ServerContainer;
+import br.com.fatec.netty.chat.example.view.Cliente;
 import br.com.fatec.netty.chat.example.view.Console;
 
 /**
@@ -22,14 +22,13 @@ public class App extends JFrame implements ActionListener {
 	private JLabel label1;
 	private JButton botao1;
 	private JButton botao2;
-	private JButton botao3;
-
+	
 	private String server = "localhost";
 	private int port = 5252;
-
+	
 	public App() {
 
-		this.setTitle("Teste Camada Fisica");
+		this.setTitle("Simulado Trasferencia de bits");
 		this.setBounds(0, 0, 280, 280);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(null);
@@ -40,22 +39,22 @@ public class App extends JFrame implements ActionListener {
 		this.add(label1);
 
 		botao1 = new JButton();
-		botao1.setText("Servidor");
+		botao1.setText("Receptor");
 		botao1.setBounds(40, 60, 200, 50);
 		botao1.addActionListener(this);
 		this.add(botao1);
 
 		botao2 = new JButton();
-		botao2.setText("Cliente");
+		botao2.setText("Transmissor");
 		botao2.setBounds(40, 120, 200, 50);
 		botao2.addActionListener(this);
 		this.add(botao2);
 
-		botao3 = new JButton();
-		botao3.setText("Open Console");
-		botao3.setBounds(40, 180, 200, 50);
-		botao3.addActionListener(this);
-		this.add(botao3);
+		// botao3 = new JButton();
+		// botao3.setText("Open Console");
+		// botao3.setBounds(40, 180, 200, 50);
+		// botao3.addActionListener(this);
+		// this.add(botao3);
 
 	}
 
@@ -67,13 +66,15 @@ public class App extends JFrame implements ActionListener {
 	}
 
 	public void startServer() {
-		ContainerServer containerServer = new ContainerServer(port);
+		Console.getInstance();
+		ServerContainer containerServer = new ServerContainer(port);
 		containerServer.start();
 	}
 
 	public void startClient() {
-		ContainerClient containerClient = new ContainerClient(server, port);
-		containerClient.start();
+		Cliente cliente = new Cliente( server, port );
+		cliente.setLocationRelativeTo(null);
+		cliente.setVisible(true);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -84,8 +85,6 @@ public class App extends JFrame implements ActionListener {
 		} else if (e.getSource().equals(botao2)) {
 			this.startClient();
 
-		} else if (e.getSource().equals(botao3)) {
-			Console.getInstance();
 		}
 	}
 }
