@@ -8,6 +8,11 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+/**
+ * 
+ * @author Jair Jr Batista
+ *
+ */
 public class ClientContainer {
 
 	private String server;
@@ -16,12 +21,15 @@ public class ClientContainer {
 	private EventLoopGroup group;
 	private JTextArea chatjTextArea;
 
+	//---------------------------------------------------------------------------------------------------------------	
 	public ClientContainer(String server, int port, JTextArea chatjTextArea) {
 		this.server = server;
 		this.port = port;
 		this.chatjTextArea = chatjTextArea;
 	}
 
+	//FIXME: Melhorar a instancia da thread
+	//---------------------------------------------------------------------------------------------------------------
 	public void start() {
 		group = new NioEventLoopGroup();
 
@@ -36,11 +44,18 @@ public class ClientContainer {
 			group.shutdownGracefully();
 		}
 	}
-
+	
+	//---------------------------------------------------------------------------------------------------------------
 	public void stop() {
 		group.shutdownGracefully();
 	}
 
+	//---------------------------------------------------------------------------------------------------------------
+	/**
+	 * Envia a mensagem pelo canal
+	 * 
+	 * @param message
+	 */
 	public void sendAndFlushMessage(String message) {
 		if (channel.isOpen()) {
 			channel.write(message + "\n");
@@ -49,9 +64,17 @@ public class ClientContainer {
 			System.out.println("Canal fechado");
 		}
 	}
-
+	
+	//---------------------------------------------------------------------------------------------------------------
+	/**
+	 * Checa se o canal está aberto
+	 * @return
+	 */
 	public Boolean isOpen() {
 		return channel.isOpen();
 	}
-
+	
+	//---------------------------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------------------
 }

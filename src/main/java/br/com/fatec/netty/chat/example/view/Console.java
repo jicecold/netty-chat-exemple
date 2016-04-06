@@ -18,7 +18,15 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+/**
+ * Este console foi pego na internet e adaptado para exibir as informaçòes em tela
+ * 
+ * @author Jair Jr Batista
+ *
+ */
 public class Console extends WindowAdapter implements WindowListener, ActionListener, Runnable {
+	
+	// ---------------------------------------------------------------------------------------------------------------
 	private static Console instance;
 	private JFrame frame;
 	private JTextArea textArea;
@@ -29,9 +37,13 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 	private final PipedInputStream pin = new PipedInputStream();
 	private final PipedInputStream pin2 = new PipedInputStream();
 
-	Thread errorThrower; // just for testing (Throws an Exception at this
-							// Console
-
+	private Thread errorThrower; // somente para testar o console
+	
+	// ---------------------------------------------------------------------------------------------------------------
+	/**
+	 * Instancia singleton, unica instancia
+	 * @return
+	 */
 	public static Console getInstance() {
 
 		if (instance == null) {
@@ -40,9 +52,10 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 		return instance;
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------
 	private Console() {
 		// create all components and add them
-		frame = new JFrame("Java Console");
+		frame = new JFrame("Receptor:::Console");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension frameSize = new Dimension((int) (screenSize.width / 2), (int) (screenSize.height / 2));
 		int x = (int) (frameSize.width / 2);
@@ -82,7 +95,6 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 		quit = false; // signals the Threads that they should exit
 
 		// Starting two seperate threads to read from the PipedInputStreams
-		//
 		reader = new Thread(this);
 		reader.setDaemon(true);
 		reader.start();
@@ -110,6 +122,7 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 		errorThrower.start();
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------
 	public synchronized void windowClosed(WindowEvent evt) {
 		quit = true;
 		this.notifyAll(); // stop all threads
@@ -126,15 +139,21 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 		System.exit(0);
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------
 	public synchronized void windowClosing(WindowEvent evt) {
 		frame.setVisible(false); // default behaviour of JFrame
 		frame.dispose();
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------
 	public synchronized void actionPerformed(ActionEvent evt) {
 		textArea.setText("");
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------
+	/**
+	 * Thread principal
+	 */
 	public synchronized void run() {
 		try {
 			while (Thread.currentThread() == reader) {
@@ -175,11 +194,18 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 			}
 			throw new NullPointerException(
 					"Application test: throwing an NullPointerException It should arrive at the console");
-			
+
 		}
 
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------
+	/**
+	 * Retorna a informação que vem do stream no console
+	 * @param in
+	 * @return
+	 * @throws IOException
+	 */
 	public synchronized String readLine(PipedInputStream in) throws IOException {
 		String input = "";
 		do {
@@ -192,5 +218,7 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
 		} while (!input.endsWith("\n") && !input.endsWith("\r\n") && !quit);
 		return input;
 	}
-
+	// ---------------------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------------------------
 }

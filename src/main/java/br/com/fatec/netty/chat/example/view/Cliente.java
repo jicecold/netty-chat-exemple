@@ -19,8 +19,14 @@ import javax.swing.WindowConstants;
 
 import br.com.fatec.netty.chat.example.client.ClientContainer;
 
+/**
+ * 
+ * @author Jair Jr Batista
+ *
+ */
 public class Cliente extends WindowAdapter implements WindowListener {
 
+	// ---------------------------------------------------------------------------------------------------------------
 	private JFrame frame;
 	private JTextArea chatjTextArea;
 	private JButton enviarjButton;
@@ -29,15 +35,20 @@ public class Cliente extends WindowAdapter implements WindowListener {
 	private JTextArea mensagemjTextArea;
 	private ClientContainer containerClient;
 
+	// ---------------------------------------------------------------------------------------------------------------
 	public Cliente(String server, int port) {
 		initComponents();
 		containerClient = new ClientContainer(server, port, chatjTextArea);
 		containerClient.start();
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------
+	/**
+	 * Inicia os componente de visualização do console
+	 */
 	private void initComponents() {
 
-		frame = new JFrame("Cliente");
+		frame = new JFrame("Transmissor:::Mensageiro");
 
 		jScrollPane1 = new JScrollPane();
 		chatjTextArea = new JTextArea();
@@ -88,23 +99,38 @@ public class Cliente extends WindowAdapter implements WindowListener {
 		frame.pack();
 	}
 
+	//---------------------------------------------------------------------------------------------------------------
+	/**
+	 * FIXME não está funcionando
+	 * Evento de pressionamento de tecla
+	 * @param evt
+	 */
 	protected void mensagemjTextAreaKeyReleased(KeyEvent evt) {
 		if( evt.getKeyCode() == 13 ){
 			enviarjButtonActionPerformed(evt);
 		}
-		
 	}
 
+	//---------------------------------------------------------------------------------------------------------------
 	public void setLocationRelativeTo(Component component) {
 		this.frame.setLocationRelativeTo(component);
 	}
 
+	//---------------------------------------------------------------------------------------------------------------
 	public void setVisible(boolean b) {
 		this.frame.setVisible(b);
 	}
 
+	//---------------------------------------------------------------------------------------------------------------
+	/**
+	 * Evento de envio de mensagem pelo canal
+	 * @param event
+	 */
 	public void enviarjButtonActionPerformed(EventObject event) {
 		containerClient.sendAndFlushMessage(mensagemjTextArea.getText());
 		mensagemjTextArea.setText("");
 	}
+	//---------------------------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------------------
 }

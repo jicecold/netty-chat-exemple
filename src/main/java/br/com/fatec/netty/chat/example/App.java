@@ -12,7 +12,16 @@ import br.com.fatec.netty.chat.example.view.Cliente;
 import br.com.fatec.netty.chat.example.view.Console;
 
 /**
- * Hello world!
+ * Classe principal que inicia os canais de transmissão e recepção de dados Este
+ * é um projeto academico de demostração de camada fisica do modelo de
+ * referencia OSI, que simula a troca de mensegens e por um canal de transmissão
+ * e recepção de dados e exibe a mensagem em bits.
+ * 
+ * Exemplo de uso da biblioteca NETTY => io.netty.
+ * 
+ * Livre para USO e ABUSO, passe os créditos.
+ * 
+ * @author Jair Jr Batista
  *
  */
 public class App extends JFrame implements ActionListener {
@@ -22,11 +31,14 @@ public class App extends JFrame implements ActionListener {
 	private JLabel label1;
 	private JButton botao1;
 	private JButton botao2;
-	
+
 	private String server = "localhost";
 	private int port = 5252;
-	
+
+	// ---------------------------------------------------------------------------------------------------------------
 	public App() {
+
+		// FIXME passar para um metodo externo
 
 		this.setTitle("Simulado Trasferencia de bits");
 		this.setBounds(0, 0, 280, 280);
@@ -58,6 +70,7 @@ public class App extends JFrame implements ActionListener {
 
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------
 	public static void main(String[] args) {
 
 		App exemplo = new App();
@@ -65,18 +78,30 @@ public class App extends JFrame implements ActionListener {
 
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------
+	/**
+	 * inicia o receptor de mensagens
+	 */
 	public void startServer() {
 		Console.getInstance();
 		ServerContainer containerServer = new ServerContainer(port);
 		containerServer.start();
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------
+	/**
+	 * inicia transmissor de mensagens
+	 */
 	public void startClient() {
-		Cliente cliente = new Cliente( server, port );
+		Cliente cliente = new Cliente(server, port);
 		cliente.setLocationRelativeTo(null);
 		cliente.setVisible(true);
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------
+	/**
+	 * Evento clique do botão
+	 */
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource().equals(botao1)) {
@@ -87,4 +112,7 @@ public class App extends JFrame implements ActionListener {
 
 		}
 	}
+	// ---------------------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------------------------
 }
