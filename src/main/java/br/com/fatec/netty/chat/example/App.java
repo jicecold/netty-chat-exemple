@@ -21,7 +21,11 @@ import br.com.fatec.netty.chat.example.view.Console;
  * 
  * Livre para USO e ABUSO, passe os créditos.
  * 
- * @author Jair Jr Batista
+ * https://github.com/jicecold/physical_layer_netty_example.git
+ * 
+ * @author Fabio S. da Silveira 
+ * @author Jair Jr Batista 
+ * @author Warnner A. F. Sinotti
  *
  */
 public class App extends JFrame implements ActionListener {

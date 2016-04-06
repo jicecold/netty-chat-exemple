@@ -8,7 +8,9 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
  * 
- * @author Jair Jr Batista
+ * @author Fabio S. da Silveira 
+ * @author Jair Jr Batista 
+ * @author Warnner A. F. Sinotti
  *
  */
 public class ServerAdapterHandler extends SimpleChannelInboundHandler<String> {

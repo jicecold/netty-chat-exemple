@@ -21,7 +21,9 @@ import br.com.fatec.netty.chat.example.client.ClientContainer;
 
 /**
  * 
- * @author Jair Jr Batista
+ * @author Fabio S. da Silveira 
+ * @author Jair Jr Batista 
+ * @author Warnner A. F. Sinotti
  *
  */
 public class Cliente extends WindowAdapter implements WindowListener {

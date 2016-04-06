@@ -21,7 +21,9 @@ import javax.swing.JTextArea;
 /**
  * Este console foi pego na internet e adaptado para exibir as informaçòes em tela
  * 
- * @author Jair Jr Batista
+ * @author Fabio S. da Silveira 
+ * @author Jair Jr Batista 
+ * @author Warnner A. F. Sinotti
  *
  */
 public class Console extends WindowAdapter implements WindowListener, ActionListener, Runnable {

@@ -8,7 +8,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 /**
  * FIXME: Melhorar a thread
  * 
- * @author Jair Jr Batista
+ * @author Fabio S. da Silveira 
+ * @author Jair Jr Batista 
+ * @author Warnner A. F. Sinotti
  *
  */
 public class ServerContainer extends Thread {

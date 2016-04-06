@@ -10,7 +10,9 @@ import io.netty.handler.codec.string.StringEncoder;
 
 /**
  * 
- * @author Jair Jr Batista
+ * @author Fabio S. da Silveira 
+ * @author Jair Jr Batista 
+ * @author Warnner A. F. Sinotti
  *
  */
 public class ClientAdapterInitializer extends ChannelInitializer<SocketChannel> {
