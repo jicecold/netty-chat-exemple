@@ -1,6 +1,6 @@
 package br.com.fatec.netty.chat.example;
 
-import br.com.fatec.netty.chat.example.view.Main;
+import br.com.fatec.netty.chat.example.view.MainView;
 import javafx.application.Application;
 
 /**
@@ -25,7 +25,7 @@ public class App {
 	// ---------------------------------------------------------------------------------------------------------------
 	public static void main(String[] args) {
  
-		Application.launch(Main.class, args);
+		Application.launch(MainView.class, args);
 	}
 	
 	// ---------------------------------------------------------------------------------------------------------------

@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import br.com.fatec.netty.chat.example.domain.UserChannel;
 import br.com.fatec.netty.chat.example.network.ChannelListener;
+import br.com.fatec.netty.chat.example.network.ChannelWrite;
 import br.com.fatec.netty.chat.example.network.NetworkConsumerCallback;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -21,7 +22,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * @author Warnner A. F. Sinotti
  *
  */
-public class ServerContainer implements ChannelListener {
+public class ServerContainer implements ChannelListener, ChannelWrite {
 
 	public static final Map<String, UserChannel> connections = new ConcurrentHashMap<String, UserChannel>(10);
 	private Thread thread;
@@ -34,7 +35,8 @@ public class ServerContainer implements ChannelListener {
 		this.port = port;
 	}
 
-	public synchronized void run() {
+	public void run() {
+
 		EventLoopGroup producer = new NioEventLoopGroup();
 		EventLoopGroup consumer = new NioEventLoopGroup();
 
@@ -128,8 +130,34 @@ public class ServerContainer implements ChannelListener {
 		if (connections.containsKey(channelId) && !message.trim().equals("")) {
 			UserChannel userChannel = connections.get(channelId);
 			onReceiveCallback.processCallback(userChannel, message);
+
+			if ("/ping".equals(message)) {
+				try {
+					Thread.sleep(1000);
+					sendAndFlushMensage(ctx, "/pong");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+
 			System.out.println(channelId + ":::=>" + message);
 		}
+	}
+
+	@Override
+	public void sendAndFlushMensage(Channel channel, String message) {
+		if (channel.isRegistered()) {
+			channel.write(message + "\n");
+			channel.flush();
+		} else {
+			System.out.println("Canal fechado");
+		}
+	}
+
+	@Override
+	public void sendAndFlushMensage(String msg) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -1,8 +1,6 @@
 package br.com.fatec.netty.chat.example.network.server;
 
-import br.com.fatec.netty.chat.example.network.ChannelWrite;
 import br.com.fatec.netty.chat.example.network.NetworkChannelCallback;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -13,16 +11,13 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @author Warnner A. F. Sinotti
  *
  */
-public class ServerAdapterHandler extends SimpleChannelInboundHandler<String> implements ChannelWrite {
+public class ServerAdapterHandler extends SimpleChannelInboundHandler<String> {
 
 	private NetworkChannelCallback callback;
 
 	public ServerAdapterHandler(NetworkChannelCallback callback) {
 		this.callback = callback;
 	}
-
-	// A brincadeira do ping esta valendo?
-	private boolean isPing = false;
 
 	@Override
 	public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
@@ -69,16 +64,6 @@ public class ServerAdapterHandler extends SimpleChannelInboundHandler<String> im
 		// " + msg);
 		// }
 		// }
-	}
-
-	public void sendAndFlushMensage(Channel channel, String msg) {
-		channel.writeAndFlush(msg + "\n");
-	}
-
-	@Override
-	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-		super.channelUnregistered(ctx);
-		callback.OnCloseChannel(ctx, "Canal removido");
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------
