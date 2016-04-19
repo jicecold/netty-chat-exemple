@@ -1,4 +1,4 @@
-package br.com.fatec.netty.chat.example.client;
+package br.com.fatec.netty.chat.example.network.client;
 
 import javax.swing.JTextArea;
 

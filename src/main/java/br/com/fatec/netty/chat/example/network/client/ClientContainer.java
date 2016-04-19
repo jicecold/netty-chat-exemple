@@ -1,4 +1,4 @@
-package br.com.fatec.netty.chat.example.client;
+package br.com.fatec.netty.chat.example.network.client;
 
 import javax.swing.JTextArea;
 
@@ -15,7 +15,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * @author Warnner A. F. Sinotti
  *
  */
-public class ClientContainer {
+public class ClientContainer{
 
 	private String server;
 	private int port;
