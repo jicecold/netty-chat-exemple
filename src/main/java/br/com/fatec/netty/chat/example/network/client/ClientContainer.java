@@ -3,6 +3,8 @@ package br.com.fatec.netty.chat.example.network.client;
 import br.com.fatec.netty.chat.example.domain.UserChannel;
 import br.com.fatec.netty.chat.example.network.ChannelListener;
 import br.com.fatec.netty.chat.example.network.ChannelWrite;
+import br.com.fatec.netty.chat.example.network.CommandAction;
+import br.com.fatec.netty.chat.example.network.DefaultCommandAction;
 import br.com.fatec.netty.chat.example.network.NetworkConsumerCallback;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -23,6 +25,7 @@ public class ClientContainer implements ChannelListener, ChannelWrite {
 	private String server;
 	private int port;
 	private EventLoopGroup group;
+	private CommandAction commandAction = new DefaultCommandAction();
 	private NetworkConsumerCallback<UserChannel> callback;
 
 	// ---------------------------------------------------------------------------------------------------------------
@@ -88,13 +91,8 @@ public class ClientContainer implements ChannelListener, ChannelWrite {
 		if (!message.trim().equals("")) {
 			callback.processCallback(userChannel, message);
 			
-			if ("/pong".equals(message)) {
-				try {
-					Thread.sleep(1000);
-					sendAndFlushMensage(ctx, "/ping");
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+			if( message.startsWith("/") ){
+				commandAction.processAction(this, channelId, message);
 			}
 			
 			System.out.println(channelId + ":::=>" + message);
@@ -118,6 +116,11 @@ public class ClientContainer implements ChannelListener, ChannelWrite {
 	}
 
 	@Override
+	public void sendAndFlushMensage(String channelId, String message) {
+		Channel channel = userChannel.getChannel();
+		sendAndFlushMensage(channel, message);
+	}
+
 	public void sendAndFlushMensage(String message) {
 		Channel channel = userChannel.getChannel();
 		sendAndFlushMensage(channel, message);

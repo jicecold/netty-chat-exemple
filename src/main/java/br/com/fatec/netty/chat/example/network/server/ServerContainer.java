@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import br.com.fatec.netty.chat.example.domain.UserChannel;
 import br.com.fatec.netty.chat.example.network.ChannelListener;
 import br.com.fatec.netty.chat.example.network.ChannelWrite;
+import br.com.fatec.netty.chat.example.network.CommandAction;
+import br.com.fatec.netty.chat.example.network.DefaultCommandAction;
 import br.com.fatec.netty.chat.example.network.NetworkConsumerCallback;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -28,6 +30,7 @@ public class ServerContainer implements ChannelListener, ChannelWrite {
 	private Thread thread;
 	private ServerBootstrap bootstrap;
 	private NetworkConsumerCallback<UserChannel> onReceiveCallback;
+	private CommandAction commandAction = new DefaultCommandAction();
 	private int port;
 
 	public ServerContainer(int port, NetworkConsumerCallback<UserChannel> onReceiveCallback) {
@@ -131,13 +134,8 @@ public class ServerContainer implements ChannelListener, ChannelWrite {
 			UserChannel userChannel = connections.get(channelId);
 			onReceiveCallback.processCallback(userChannel, message);
 
-			if ("/ping".equals(message)) {
-				try {
-					Thread.sleep(1000);
-					sendAndFlushMensage(ctx, "/pong");
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+			if (message.startsWith("/")) {
+				commandAction.processAction(this, channelId, message);
 			}
 
 			System.out.println(channelId + ":::=>" + message);
@@ -155,9 +153,11 @@ public class ServerContainer implements ChannelListener, ChannelWrite {
 	}
 
 	@Override
-	public void sendAndFlushMensage(String msg) {
-		// TODO Auto-generated method stub
+	public void sendAndFlushMensage(String channelId, String msg) {
 
+		if (connections.containsKey(channelId)) {
+			UserChannel userChannel = connections.get(channelId);
+			sendAndFlushMensage(userChannel.getChannel(), msg);
+		}
 	}
-
 }
