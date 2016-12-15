@@ -84,10 +84,17 @@ public class ServerView extends Stage {
 			@Override
 			public void processCallback(UserChannel data, String message) {
 				Platform.runLater(() -> {
+
 					console.appendText("[" + data.getName() + data.getAddress() + "]:::=> " + message + "\n");
-					// TODO: Fazer uma interface de output
-					String binary = new BigInteger(message.getBytes()).toString(2);
-					console.appendText("\t[Binario]:::=>" + binary + "\n");
+
+					String messages[] = message.split(" ");
+
+					for (String msg : messages) {
+
+						// TODO: Fazer uma interface de output
+						String binary = new BigInteger(msg.getBytes()).toString(2);
+						console.appendText("[Palavra]:::>" + msg + "\t[Binario]:::=>" + binary + "\n");
+					}
 				});
 			}
 		});
@@ -106,18 +113,19 @@ public class ServerView extends Stage {
 		leftPane.getChildren().add(leftLabel);
 
 		ListView<UserChannel> listView = new ListView<UserChannel>(userList);
-		
+
 		MenuItem menu = new MenuItem("Enviar Comando");
 		menu.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) {
-		    	
-		    	UserChannel userChannel = listView.getSelectionModel().getSelectedItem();
-		    	CommandView view = new CommandView(userChannel);
-		    	view.show();		    	
-		    }
+			@Override
+			public void handle(ActionEvent e) {
+
+				UserChannel userChannel = listView.getSelectionModel().getSelectedItem();
+				CommandView view = new CommandView(userChannel);
+				view.show();
+			}
 		});
 		ContextMenu contextMenu = new ContextMenu(menu);
-		
+
 		// listView.setPrefHeight(560);
 		// listView.setPrefWidth(320);
 		listView.setEditable(false);
